@@ -23,6 +23,14 @@ export default{
       parseInput: []
     }
   },
+  watch: {
+    '$route' (to){
+      if(to.name === "Output"){
+        this.parseInput = []
+        this.handle_input(this.$route.params.expr)
+      }
+    }
+  },
   methods: {
     async main(script, context = {}) {
       try{
@@ -31,7 +39,7 @@ export default{
               return results;
           } else if (error) {
               console.log(error)
-              alert("pyodideWorker error: "+ error + ". Please report an issue on github.");
+              alert("pyodideWorker error: " + error + ". Please report an issue on github.");
           }
       }catch (e){
           console.log(
@@ -41,8 +49,6 @@ export default{
       }
     },
     handle_input(input_expr){
-      this.parseInput = []
-      this.$router.push(`/input/${input_expr}`)
       this.main(input_expr).then((data) => {
         this.parseInput = data
       }).catch((error) =>{
@@ -56,6 +62,8 @@ export default{
 
 <template>
   <div>
+
+
     <header class="bg-[#032200] text-slate-300 border-b-2 border-lime-500 ">
       <div class="mr-5 px-2 header-links">
         <router-link :to = "{ name: 'Main'}" class = "mr-2 cursor-pointer">Main</router-link>
@@ -63,19 +71,34 @@ export default{
         <a href="https://live.sympy.org/" target = "_blank" class = "mx-2 cursor-pointer">SymPy Live</a>
       </div>
     </header>
+
+
       <main>
+        <!--SymPy Logo + SearchBar-->
         <div v-if = "$route.path != '/about'">
-          <Searchbar @expr-input= "(input_expr) => {handle_input(input_expr)}" />
+          <Searchbar @expr-input= "(input_expr) => {this.$router.push(`/input/${input_expr}`)}" />
         </div>
+
+
         <div v-if = "! $route.path.startsWith('/input')" >
           <router-view :isloaded = "isloading"/>
         </div>
         <div v-else>
-          <div v-for = "card, index in parseInput" :key = "index" >
-            <Output :data = "card" />
+          <div v-if = "parseInput.length === 0">
+            <p class = "text-center text-lg m-4">
+              Loading...
+            </p> 
+          </div>
+          <div v-else>
+            <div v-for = "card, index in parseInput" :key = "index" >
+              <Output :data = "card" />
+            </div>
           </div>
         </div>
       </main>
+
+
+
       <footer>
         <Footer :sympy_version="sympy_version"></Footer>
       </footer>

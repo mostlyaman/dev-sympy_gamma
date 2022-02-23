@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class = "bg-white shadow-lg m-3 p-3 max-w-[80%] mx-auto ">
     {{ data }}
 </div>
 </template>

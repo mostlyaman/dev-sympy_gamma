@@ -15,9 +15,22 @@
     </div>
 </template>
 
-<script setup>
-let input_expr = ""
-const emit = defineEmits(['expr-input'])
+<script>
+export default {
+  name: "Searchbar",
+  data(){
+    return {
+        input_expr: ""
+    }
+  },
+  watch: {
+    '$route' (to){
+      if(to.name === "Output"){
+        this.input_expr = this.$route.params.expr
+      }
+    }
+  }
+}
 </script>
 
 <style>
