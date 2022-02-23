@@ -1,5 +1,6 @@
 <template>
-<div class = "bg-white shadow-lg m-3 p-3 max-w-[80%] mx-auto ">
+<div class = "bg-white shadow-lg m-3 p-7 max-w-[80%] mx-auto ">
+    <p class = "text-xl mb-2">{{data.get('title')}}</p>
     {{ data }}
 </div>
 </template>
