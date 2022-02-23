@@ -1,7 +1,9 @@
 //Source: https://pyodide.org/en/stable/usage/webworker.html#the-worker-api
 const baseURL = import.meta.env.BASE_URL
 
-const pyodideWorker = new Worker(baseURL+"worker.js");
+const pyodideWorker = new Worker(`${baseURL}worker.js`);
+
+pyodideWorker.postMessage({name: 'baseURL', data: baseURL})
 
 const callbacks = {};
 
@@ -19,8 +21,8 @@ pyodideWorker.onmessage = (event) => {
   }else if(event.data.name === "loading-python-failed"){
     document.dispatchEvent(new CustomEvent('loading-python-failed', {detail: {error: event.data.error}}))
   }
-  else{
-    const { id, ...data } = event.data;
+  else if(event.data.name === "output"){
+    const { id, ...data } = event.data.data;
     const onSuccess = callbacks[id];
     delete callbacks[id];
     onSuccess(data);
@@ -34,11 +36,11 @@ const asyncRun = (() => {
     id = (id + 1) % Number.MAX_SAFE_INTEGER;
     return new Promise((onSuccess) => {
       callbacks[id] = onSuccess;
-      pyodideWorker.postMessage({
+      pyodideWorker.postMessage({name: "input", data: {
         ...context,
         python: script,
         id,
-      });
+      }});
     });
   };
 })();

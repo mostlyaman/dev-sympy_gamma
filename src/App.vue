@@ -20,7 +20,7 @@ document.addEventListener('loading-python-failed', (e)=> {isloading.value = "Err
 export default{
   data(){
     return {
-      parseInput: []
+      parseInput: [],
     }
   },
   watch: {
@@ -76,7 +76,7 @@ export default{
       <main>
         <!--SymPy Logo + SearchBar-->
         <div v-if = "$route.path != '/about'">
-          <Searchbar @expr-input= "(input_expr) => {this.$router.push(`/input/${input_expr}`)}" />
+          <Searchbar @expr-input= "(input_expr) => {$router.push(`/input/${input_expr}`)}" />
         </div>
 
 

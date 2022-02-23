@@ -7,9 +7,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const app = createApp(App)
 
 const router = createRouter({
-  history: createWebHistory(process.env.NODE_ENV === 'production'
-  ? '/scuffed-sympy-gamma/'
-  : '/'),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 
