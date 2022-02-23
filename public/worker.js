@@ -33,9 +33,7 @@ s = SymPyGamma()
   postMessage({name: 'loading-sympy'})
   let sympy_version = await self.pyodide.runPythonAsync(`
 import sympy
-def get_sympy_version():
-  return to_js(sympy.__version__)
-get_sympy_version()
+to_js(sympy.__version__)
 `)
   postMessage({name: 'done-loading', data: sympy_version})
 }
