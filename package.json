@@ -1,6 +1,6 @@
 {
-  "name": "gamma",
-  "version": "0.0.1",
+  "name": "dev-sympy_gamma",
+  "version": "0.1.0",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
