@@ -13,6 +13,6 @@ export default defineConfig({
     open: true,
   },
   base: process.env.NODE_ENV === 'production'
-  ? '/scuffed-sympy-gamma/'
+  ? '/dev-sympy_gamma/'
   : '/'
 })
