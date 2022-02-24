@@ -106,7 +106,9 @@ export default{
             </div>
           </div>
         </div>
-        <button @click = "callMathjax">Math</button>
+        <div class = " text-white text-sm flex justify-center" v-if = "$route.path != '/about'">
+          <button class = "bg-lime-600 p-2 shadow-lg" @click = "callMathjax">Re-Render Math</button>
+        </div>
       </main>
       <footer>
         <Footer :sympy_version="sympy_version" :pyodide_version="pyodide_version"></Footer>

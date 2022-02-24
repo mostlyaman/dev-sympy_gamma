@@ -27,6 +27,8 @@ export default {
     '$route' (to){
       if(to.name === "Output"){
         this.input_expr = this.$route.params.expr.replace(/divide/g, '/')
+      }else if(to.name === "Main"){
+        this.input_expr = ""
       }
     }
   }
