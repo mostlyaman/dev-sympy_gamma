@@ -16,7 +16,7 @@ export const routes = [
   },
   {
     path: '/input/:expr', name: "Output",
-    component: Empty
+    component: Empty,
   },
   { path: '/:path(.*)', component: NotFound },
 ]

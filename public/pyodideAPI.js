@@ -11,7 +11,7 @@ pyodideWorker.onmessage = (event) => {
   if(event.data.name === "loading-pyodide"){
     document.dispatchEvent(new CustomEvent('loading-pyodide'))
   }else if(event.data.name === "loading-packages"){
-    document.dispatchEvent(new CustomEvent('loading-packages'))
+    document.dispatchEvent(new CustomEvent('loading-packages', {detail: {data: event.data.data}}))
   }else if(event.data.name === "starting-python"){
     document.dispatchEvent(new CustomEvent('starting-python'))
   }else if(event.data.name === "done-loading"){

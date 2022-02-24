@@ -13,7 +13,7 @@ async function loadPyodideAndPackages() {
   self.pyodide = await loadPyodide({
     indexURL: `https://cdn.jsdelivr.net/pyodide/v${pyodideVersion}/full/`,
   });
-  postMessage({name: 'loading-packages'})
+  postMessage({name: 'loading-packages', data: pyodideVersion})
   await self.pyodide.loadPackage(["numpy", "sympy", "micropip", "docutils"]);
   postMessage({name: "starting-python"})
   try{
@@ -53,10 +53,7 @@ self.onmessage = async (event) => {
     }
     // Now is the easy part, the one that is similar to working in the main thread:
     try {
-      let results = await self.pyodide.runPythonAsync(`
-  def x():
-      return to_js(s.eval("`+python+`"))
-  x()`);
+      let results = await self.pyodide.runPythonAsync(`to_js(s.eval("`+python+`"))`);
       self.postMessage({name: "output", data: { results, id }});
     } catch (error) {
       self.postMessage({name: "output", data: { error: error.message, id }});

@@ -7,12 +7,15 @@ import asyncRun from '/public/pyodideAPI'
 
 let isloading = ref("Loading")
 let sympy_version = ref("Loading...")
+let pyodide_version = ref("Loading...")
 document.addEventListener('loading-pyodide', ()=>{isloading.value = "Loading Pyodide"})
-document.addEventListener('loading-packages', ()=>{isloading.value = "Loading Packages"})
+document.addEventListener('loading-packages', (e)=>{isloading.value = "Loading Packages"; pyodide_version.value = e.detail.data})
 document.addEventListener('starting-python', ()=>{isloading.value = "Starting Python"})
 document.addEventListener('loading-sympy', ()=> {isloading.value = "Loading SymPy"})
 document.addEventListener('done-loading', (e)=>{isloading.value = "Finished Loading"; sympy_version.value = e.detail.data;})
 document.addEventListener('loading-python-failed', (e)=> {isloading.value = "Error: " + e.detail.error })
+
+
 
 </script>
 
@@ -24,14 +27,19 @@ export default{
     }
   },
   watch: {
-    '$route' (to){
+    '$route': async function (to){
       if(to.name === "Output"){
         this.parseInput = []
-        this.handle_input(this.$route.params.expr)
+        await this.handle_input(this.$route.params.expr.replace(/divide/g, '/'))
       }
+      
     }
   },
   methods: {
+    callMathjax(){
+      window.MathJax.typesetClear()
+      window.MathJax.typeset(document.getElementsByClassName('has-math'))
+    },
     async main(script, context = {}) {
       try{
           const { results, error } = await asyncRun(script, context);
@@ -48,10 +56,13 @@ export default{
           alert(`asyncRun Failed. Please report an issue on github. Details: Error in pyodideWorker at ${e.filename}, Line: ${e.lineno}, ${e.message}`)
       }
     },
-    handle_input(input_expr){
+    async handle_input(input_expr){
+      console.log(1)
       this.main(input_expr).then((data) => {
+        console.log(2, data)
         this.parseInput = data
       }).catch((error) =>{
+        console.log(3)
         console.log(error)
         alert('Promise returned Error. Please report an issue on github.' + error)
       })
@@ -95,12 +106,10 @@ export default{
             </div>
           </div>
         </div>
+        <button @click = "callMathjax">Math</button>
       </main>
-
-
-
       <footer>
-        <Footer :sympy_version="sympy_version"></Footer>
+        <Footer :sympy_version="sympy_version" :pyodide_version="pyodide_version"></Footer>
       </footer>
     </div>
 </template>

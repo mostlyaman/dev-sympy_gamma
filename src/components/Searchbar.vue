@@ -6,7 +6,7 @@
                 <h1 class = "m-2 text-slate-200 sympy text-3xl hover:text-lime-400 cursor-pointer">SymPy Gamma</h1>
         </div>
         </router-link>
-        <form @submit = "(e) =>{e.preventDefault(); $emit('expr-input', input_expr)}">
+        <form @submit = "(e) =>{e.preventDefault(); $emit('expr-input', input_expr.replace(/\//g, 'divide'))}">
         <div class = "flex justify-center p-2">
             <input type="text" class="form-input py-1 w-[100vh]" v-model = "input_expr">
             <button type = "submit" class = "bg-lime-600 px-5 text-white hover:bg-lime-700">=</button>
@@ -26,7 +26,7 @@ export default {
   watch: {
     '$route' (to){
       if(to.name === "Output"){
-        this.input_expr = this.$route.params.expr
+        this.input_expr = this.$route.params.expr.replace(/divide/g, '/')
       }
     }
   }
