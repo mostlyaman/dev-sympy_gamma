@@ -4,7 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SymPy Gamma</title>
-    <script src = "/loadMathjax.js" async></script>
+    <!-- <script src = "/loadMathjax.js" async></script> -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+          jax: ["input/TeX", "output/HTML-CSS"],
+          TeX: {
+              extensions: ["AMSmath.js", "AMSsymbols.js", "noErrors.js", "noUndefined.js"]
+          },
+          "HTML-CSS": {
+              minScaleAdjust: 100
+          },
+          menuSettings: {
+              context: "MathJax",
+              zoom: "Hover",
+              ALT: true
+          },
+          MathZoom: {
+              delay: 100
+          },
+          extensions: ["tex2jax.js"]
+      });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS_CHTML-full"></script>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
   </head>
   <body>

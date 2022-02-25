@@ -37,8 +37,7 @@ export default{
   },
   methods: {
     callMathjax(){
-      window.MathJax.typesetClear()
-      window.MathJax.typeset(document.getElementsByClassName('has-math'))
+      window.MathJax.Hub.Queue(["Typeset",MathJax.Hub], document.getElementsByClassName('has-math'));
     },
     async main(script, context = {}) {
       try{
@@ -57,12 +56,9 @@ export default{
       }
     },
     async handle_input(input_expr){
-      console.log(1)
       this.main(input_expr).then((data) => {
-        console.log(2, data)
         this.parseInput = data
       }).catch((error) =>{
-        console.log(3)
         console.log(error)
         alert('Promise returned Error. Please report an issue on github.' + error)
       })

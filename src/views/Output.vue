@@ -5,6 +5,8 @@
         <p class="text-md font-mono "> {{ data.get('input') }}</p>
     </div>
     <hr style = "border-color: black;">
+    <div class="has-math" :id = "data.get('title')">
+    </div>
 </div>
 </template>
 
@@ -14,10 +16,11 @@ export default {
     props: {
         data: Map
     },
-    created(){
-    },
     mounted(){
-        window.MathJax.typesetPromise(document.getElementsByClassName('has-math'))
+        if(this.data.has('output')){
+            document.getElementById(this.data.get('title')).innerHTML = this.data.get('output')
+        }
+        window.MathJax.Hub.Queue(["Typeset",MathJax.Hub,document.getElementById(this.data.get('title'))]);
     }
 }
 </script>
