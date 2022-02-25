@@ -6,9 +6,13 @@
     </div>
     <hr style = "border-color: black;">
     <div v-if = "data.has('output')" class = " has-math flex justify-center">
-            $${{ data.get('output').get('tex') }}$$
+            <div v-if = "data.get('output').has('approximation')">
+                $${{ data.get('output').get('tex') }} \approx {{ data.get('output').get('approximation') }}$$    
+            </div>
+            <div v-else>
+                $${{ data.get('output').get('tex') }}$$
+            </div>
     </div>
-    
 </div>
 </template>
 
