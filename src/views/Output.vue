@@ -1,10 +1,14 @@
 <template>
-<div class = "bg-white shadow-lg m-3 p-7 max-w-[80%] mx-auto ">
-    <p class = "text-xl mb-2">{{ data.get('title') }}</p>
-    <div v-if = "data.has('output')" class = "has-math m-4" text-lg>
-        Output: $ {{ data.get('output').get('tex') }} $
+<div class = "bg-white shadow-lg m-3 p-5 max-w-[80%] mx-auto ">
+    <p class = "text-lg">{{ data.get('title') }}:</p>
+    <div v-if = "data.has('input')">
+        <p class="text-md font-mono" > {{ data.get('input') }}</p>
     </div>
-    {{ data }}
+    <hr style = "border-color: black;">
+    <div v-if = "data.has('output')" class = " has-math flex justify-center">
+            $${{ data.get('output').get('tex') }}$$
+    </div>
+    
 </div>
 </template>
 
@@ -13,6 +17,9 @@ export default {
     name: "Output",
     props: {
         data: Map
+    },
+    created(){
+
     },
     mounted(){ 
         window.MathJax.typesetPromise(document.getElementsByClassName('has-math'))

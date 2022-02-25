@@ -75,7 +75,7 @@ const menu = {
     <div v-if="isloaded.startsWith('Error:')">
       {{ isloaded }}
       <p class="p-3">
-        <a href="https://github.com/mostlyaman/scuffed-sympy-gamma/issues" class = "underline text-blue-600 hover:text-blue-800" target = "_blank">
+        <a href="https://github.com/mostlyaman/dev-sympy_gamma/issues" class = "underline text-blue-600 hover:text-blue-800" target = "_blank">
           Report this issue here.
         </a>
       </p>
