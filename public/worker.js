@@ -14,16 +14,16 @@ async function loadPyodideAndPackages() {
     indexURL: `https://cdn.jsdelivr.net/pyodide/v${pyodideVersion}/full/`,
   });
   postMessage({name: 'loading-packages', data: pyodideVersion})
-  await self.pyodide.loadPackage(["numpy", "sympy", "micropip", "docutils"]);
+  await self.pyodide.loadPackage(["numpy", "sympy", "micropip", "docutils", 'six']);
   postMessage({name: "starting-python"})
   try{
 
     await self.pyodide.runPythonAsync(`
 import micropip
 from pyodide import to_js
-await micropip.install('${baseURL}gamma-1.0.0-py3-none-any.whl')
+await micropip.install('${baseURL}gammaLogic-1.0-py3-none-any.whl')
 print("Installed Packages:\\n", micropip.list())
-from gamma.logic import SymPyGamma
+from gammaLogic.logic import SymPyGamma
 s = SymPyGamma()
 `)
   }catch(error){
