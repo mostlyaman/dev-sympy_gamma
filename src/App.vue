@@ -24,6 +24,7 @@ export default{
   data(){
     return {
       parseInput: [],
+      evaluated_result: {}
     }
   },
   watch: {
@@ -39,9 +40,9 @@ export default{
     callMathjax(){
       window.MathJax.Hub.Queue(["Typeset",MathJax.Hub], document.getElementsByClassName('has-math'));
     },
-    async main(script, context = {}) {
+    async main(script, type, context = {}) {
       try{
-          const { results, error } = await asyncRun(script, context);
+          const { results, error } = await asyncRun(script, type,context);
           if (results) {
               return results;
           } else if (error) {
@@ -56,8 +57,17 @@ export default{
       }
     },
     async handle_input(input_expr){
-      this.main(input_expr).then((data) => {
+      this.main(input_expr, "input").then((data) => {
         this.parseInput = data
+      }).catch((error) =>{
+        console.log(error)
+        alert('Promise returned Error. Please report an issue on github.' + error)
+      })
+    },
+    async eval_expr(data){
+      this.evaluated_result = {}
+      this.main(data.input_expr, "eval").then((result) => {
+        this.evaluated_result[data.from] = result
       }).catch((error) =>{
         console.log(error)
         alert('Promise returned Error. Please report an issue on github.' + error)
@@ -98,7 +108,7 @@ export default{
           </div>
           <div v-else>
             <div v-for = "card, index in parseInput" :key = "index" >
-              <Output :data = "card" />
+              <Output :key="$route" :data = "card" :evaluated_result = "evaluated_result" @eval-input = "(data) => {eval_expr(data)}" />
             </div>
           </div>
         </div>
