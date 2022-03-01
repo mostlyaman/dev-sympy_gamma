@@ -33,6 +33,8 @@ s = SymPyGamma()
   postMessage({name: 'loading-sympy'})
   let sympy_version = await self.pyodide.runPythonAsync(`
 import sympy
+from sympy import *
+x, y = symbols('x y')
 to_js(sympy.__version__)
 `)
   postMessage({name: 'done-loading', data: sympy_version})
@@ -42,7 +44,7 @@ let pyodideReadyPromise = loadPyodideAndPackages();
 self.onmessage = async (event) => {
   if(event.data.name === "baseURL"){
     baseURL = event.data.data
-  }else if(event.data.name === "input"){
+  }else{
     // make sure loading is done
     await pyodideReadyPromise;
     // Don't bother yet with this line, suppose our API is built in such a way:
@@ -53,10 +55,22 @@ self.onmessage = async (event) => {
     }
     // Now is the easy part, the one that is similar to working in the main thread:
     try {
-      let results = await self.pyodide.runPythonAsync(`to_js(s.eval("`+python+`"))`);
-      self.postMessage({name: "output", data: { results, id }});
+      if(event.data.name === "input"){
+        var results = await self.pyodide.runPythonAsync(`to_js(s.eval("`+python+`"))`);
+      }else if(event.data.name === "eval"){
+        var results = await self.pyodide.runPythonAsync(`
+  def _func():
+    _result = `+python+`
+    if isinstance(_result, (list, tuple)):
+      return to_js(list(map(latex, _result)))
+    else:
+      return to_js(latex(_result))
+  _func()`)
+      }
+      postMessage({name: "output", data: { results, id }});
     } catch (error) {
-      self.postMessage({name: "output", data: { error: error.message, id }});
+
+      postMessage({name: "output", data: { error: error.message, id }});
     }
   }
 };
