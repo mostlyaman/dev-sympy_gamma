@@ -2,8 +2,17 @@
 <!-- create box + red border if it is a error block -->
 <div :class = "'bg-white m-2 p-5 w-[80vw] mx-auto '+
     (data.has('error') ? 'outline outline-2 outline-red-600' : '')">
+    <div v-if = "data.has('ambiguity')">
 
-    <!-- title -->
+        <!-- ambiguity -->
+    <p text = "text-md"  class = "text-center">
+        Did you mean <router-link :to="'/input/'+data.get('ambiguity')" class = "font-mono underline text-blue-600 hover:text-blue-800">{{data.get('ambiguity')}}</router-link> ?
+    </p>
+    </div>
+    <div v-else>
+
+        
+        <!-- title -->
     <p class = "text-lg">{{ data.get('title') }}:</p>
 
     <!-- input -->
@@ -25,6 +34,7 @@
     </div>
     
 </div>
+        </div>
 </template>
 
 <script>

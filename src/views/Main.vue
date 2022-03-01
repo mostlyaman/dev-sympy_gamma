@@ -65,6 +65,34 @@ const menu = {
     Series: [
       "series(sin(x), x, pi/2)"
     ]
+  },
+  "Number Theory":{
+    "": [
+      "1006!",
+      "factorint(12321)",
+      "prime(42)",
+      "totient(42)",
+      "isprime(12321)",
+      "nextprime(42)",
+      "diophantine(2*x + 3*y - 5)",
+      "diophantine(x**2 - 4*x*y + 8*y**2 - 3*x + 7*y - 5)",
+      "diophantine(3*x**2 + 4*y**2 - 5*z**2 + 4*x*y - 7*y*z + 7*z*x)"
+    ]},
+    "Discrete Mathematics":{"": [
+      "(x | y) & (x | ~y) & (~x | y)",
+      "x & ~x",
+      "rsolve(y(n+2)-y(n+1)-y(n), y(n))",
+      "rsolve(y(n+2)-y(n+1)-y(n), y(n), {y(0): 0, y(1): 1})",
+      "Sum(k,(k,1,m))",
+      "Sum(x**k,(k,0,oo))",
+      "Product(k**2,(k,1,m))",
+      "summation(1/2**i, (i, 0, oo))",
+      "product(i, (i, 1, k), (k, 1, n))"
+    ]},
+    Miscellaneous: {"": [
+      "factorial2",
+      "bernoulli"
+    ]
   }
 }
 </script>
