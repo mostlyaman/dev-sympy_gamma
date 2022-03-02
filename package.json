@@ -2,6 +2,8 @@
   "name": "dev-sympy_gamma",
   "version": "0.1.0",
   "scripts": {
+    "builddev": "cd gammaLogic && python3 setup.py bdist_wheel && cd - && rm public/gammaLogic-1.0-py3-none-any.whl; cp gammaLogic/dist/gammaLogic-1.0-py3-none-any.whl public/ && vite --host",
+    "buildserve": "cd gammaLogic && python3 setup.py bdist_wheel && cd - && rm public/gammaLogic-1.0-py3-none-any.whl; cp gammaLogic/dist/gammaLogic-1.0-py3-none-any.whl public/ && vite build && vite preview",
     "dev": "vite --host",
     "build": "vite build",
     "serve": "vite preview"

@@ -6,3 +6,6 @@ dist-ssr
 debug.log
 .idea
 deploy.sh
+build
+gammaLogic.egg-info
+__pycache__
