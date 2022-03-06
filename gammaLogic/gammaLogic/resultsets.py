@@ -786,7 +786,7 @@ all_cards = {
 
     'float_approximation': ResultCard(
         "Floating-point approximation",
-        "(%s).evalf({digits})",
+        "sympify('%s').evalf({digits})",
         no_pre_output,
         multivariate=False,
         parameters=['digits']),

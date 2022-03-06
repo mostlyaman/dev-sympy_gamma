@@ -54,15 +54,15 @@ export default {
         output_html_to_div(){
             let output = ""
             if(this.data.get('title') === "Plot"){
-                output =  ""
+                output = `<hr style = "border-color: black;"><p class="text-md pt-3 font-mono text-black text-center">Not Implemented</p>`
             }else if(this.data.has('output')){
                 output = this.data.get('output')
             }else if(this.evaluated_result[this.data.get('title')] && this.data.get('input')){
                 let result = this.evaluated_result[this.data.get('title')]
-                if(result){
+                if(result.length > 0){
                     output =  "<script type=\"math/tex; mode=display\">" + result + "<\/script>"
                 }else{
-                    output = `<p class="text-md font-mono text-black text-center">No Result</p>`
+                    output = `<p class="text-md pt-3 font-mono text-black text-center">No Result</p>`
                 }
             }else if(this.evaluated_result[this.data.get('title')] && !this.data.get('input')){
                 output = this.evaluated_result[this.data.get('title')]
@@ -72,7 +72,7 @@ export default {
                 }
                 output += `<div class = "text-center" >Processing...</div>`
             }
-            setTimeout(() => {window.MathJax.Hub.Queue(["Typeset",MathJax.Hub,document.getElementById(this.data.get('title')+this.data.get('card'))])}, 10000)
+            setTimeout(() => {window.MathJax.Hub.Queue(["Typeset",MathJax.Hub,document.getElementById(this.data.get('title')+this.data.get('card'))])}, 10)
             return output
         }
     }
