@@ -16,13 +16,13 @@
     <p class = "text-lg">{{ data.get('title') }}:</p>
 
     <!-- input -->
-    <div v-if = "data.get('input')">
-        <p class="text-md font-mono text-gray-600"> {{ data.get('input') }}</p>
+    <div v-if = "data.get('input') || data.get('title') === 'Plot'">
+        <p class="text-md font-mono text-gray-600 overflow-x-auto"> {{ data.get('input') }}</p>
         <hr style = "border-color: black;">
     </div>
 
     <!-- content -->
-    <div class="has-math" :id = "data.get('title')+data.get('card')">
+    <div class="has-math overflow-x-auto" :id = "data.get('title')+data.get('card')">
     <span v-html="output_html_to_div">
     </span>
     </div>
@@ -54,7 +54,7 @@ export default {
         output_html_to_div(){
             let output = ""
             if(this.data.get('title') === "Plot"){
-                output = `<hr style = "border-color: black;"><p class="text-md pt-3 font-mono text-black text-center">Not Implemented</p>`
+                output = `<p class="text-md pt-3 font-mono text-black text-center">Not Implemented</p>`
             }else if(this.data.has('output')){
                 output = this.data.get('output')
             }else if(this.evaluated_result[this.data.get('title')] && this.data.get('input')){
