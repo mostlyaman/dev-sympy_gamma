@@ -38,9 +38,7 @@ def mathjax_latex(*args):
             not obj.is_Float and
             obj.is_finite is not False and
             hasattr(obj, 'evalf')):
-            tag = '<script type="math/tex; mode=display" data-numeric="true" ' \
-                  'data-output-repr="{}" data-approximation="{}">'.format(
-                      repr(obj), latex(obj.evalf(15)))
+            tex_code.append(' \\approx {}'.format(latex(obj.evalf(15))))
 
     tex_code = ''.join(tex_code)
 
@@ -317,7 +315,7 @@ class SymPyGamma(object):
 
     def eval_card(self, card_name, expression, variable, parameters):
         card = get_card(card_name)
-
+        
         if not card:
             raise KeyError
 

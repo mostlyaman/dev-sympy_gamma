@@ -29,6 +29,7 @@ export default{
   },
   watch: {
     '$route': async function (to){
+      this.evaluated_result = {}
       if(to.name === "Output"){
         this.parseInput = []
         await this.handle_input(this.$route.params.expr.replace(/divide/g, '/'))
@@ -46,32 +47,40 @@ export default{
           if (results) {
               return results;
           } else if (error) {
-              console.log(error)
-              alert("pyodideWorker error: " + error + ". Please report an issue on github.");
+              console.error(error)
+              console.error("pyodideWorker error: " + error + ". Please report an issue on github.");
           }
       }catch (e){
-          console.log(
+          console.error(
           `Error in pyodideWorker at ${e.filename}, Line: ${e.lineno}, ${e.message}`
           );
-          alert(`asyncRun Failed. Please report an issue on github. Details: Error in pyodideWorker at ${e.filename}, Line: ${e.lineno}, ${e.message}`)
+          console.error(`asyncRun Failed. Please report an issue on github. Details: Error in pyodideWorker at ${e.filename}, Line: ${e.lineno}, ${e.message}`)
       }
     },
     async handle_input(input_expr){
       this.main(input_expr, "input").then((data) => {
         this.parseInput = data
       }).catch((error) =>{
-        console.log(error)
-        alert('Promise returned Error. Please report an issue on github.' + error)
+        console.error(error)
+        console.error('Promise returned Error. Please report an issue on github.' + error)
       })
     },
     async eval_expr(data){
-      this.evaluated_result = {}
       this.main(data.input_expr, "eval").then((result) => {
         this.evaluated_result[data.from] = result
       }).catch((error) =>{
-        console.log(error)
-        alert('Promise returned Error. Please report an issue on github.' + error)
+        console.error(error)
+        console.error('Promise returned Error. Please report an issue on github.' + error)
       })
+    },
+    async eval_card(data){
+      this.main(`"${data.card}", "${this.$route.params.expr.replace(/divide/g, '/')}", "${data.var}", {}`, "eval-card").then((result) => {
+        this.evaluated_result[data.from] = result.get('output')
+      }).catch((error) => {
+        console.error(error)
+        console.error('Promise returned Error.Please report an issue on github.' + error)
+      })
+
     }
   }
 }
@@ -108,7 +117,11 @@ export default{
           </div>
           <div v-else>
             <div v-for = "card, index in parseInput" :key = "index" >
-              <Output :key="$route" :data = "card" :evaluated_result = "evaluated_result" @eval-input = "(data) => {eval_expr(data)}" />
+              <Output :key="$route" 
+              :data = "card" 
+              :evaluated_result = "evaluated_result" 
+              @eval-input = "(data) => {eval_expr(data)}"
+              @eval-card = "(data) => {eval_card(data)}" />
             </div>
           </div>
         </div>

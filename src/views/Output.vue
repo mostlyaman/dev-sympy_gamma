@@ -16,15 +16,14 @@
     <p class = "text-lg">{{ data.get('title') }}:</p>
 
     <!-- input -->
-    <div v-if = "data.has('input')">
+    <div v-if = "data.get('input')">
         <p class="text-md font-mono text-gray-600"> {{ data.get('input') }}</p>
+        <hr style = "border-color: black;">
     </div>
-    <hr style = "border-color: black;">
 
     <!-- content -->
-    <div class="has-math" :id = "data.get('title')">
+    <div class="has-math" :id = "data.get('title')+data.get('card')">
     <span v-html="output_html_to_div">
-        
     </span>
     </div>
 
@@ -32,7 +31,6 @@
     <div class = "font-mono text-sm bg-slate-100 p-2 my-3 text-gray-700" v-if = "data.has('error')">
         {{ data.get('error') }}
     </div>
-    
 </div>
         </div>
 </template>
@@ -47,8 +45,10 @@ export default {
     mounted(){
         if(this.data.get('input')){
             this.$emit('eval-input', {from: this.data.get('title'), input_expr: this.data.get('input')})
+        }else if(this.data.get('title') !== "Plot"){
+            this.$emit('eval-card', {from: this.data.get('title'), card: this.data.get('card'), var:this.data.get('var')})
         }
-        window.MathJax.Hub.Queue(["Typeset",MathJax.Hub,document.getElementById(this.data.get('title'))]);
+        window.MathJax.Hub.Queue(["Typeset",MathJax.Hub,document.getElementById(this.data.get('title')+this.data.get('card'))]);
     },
     computed: {
         output_html_to_div(){
@@ -57,12 +57,22 @@ export default {
                 output =  ""
             }else if(this.data.has('output')){
                 output = this.data.get('output')
-            }else if(this.evaluated_result[this.data.get('title')]){
-                output =  "<script type=\"math/tex; mode=display\">" + this.evaluated_result[this.data.get('title')] + "<\/script>"
+            }else if(this.evaluated_result[this.data.get('title')] && this.data.get('input')){
+                let result = this.evaluated_result[this.data.get('title')]
+                if(result){
+                    output =  "<script type=\"math/tex; mode=display\">" + result + "<\/script>"
+                }else{
+                    output = `<p class="text-md font-mono text-black text-center">No Result</p>`
+                }
+            }else if(this.evaluated_result[this.data.get('title')] && !this.data.get('input')){
+                output = this.evaluated_result[this.data.get('title')]
             }else{
-                output = ""
+                if(!this.data.get('input')){
+                    output+=`<hr style = "border-color: black;">`
+                }
+                output += `<div class = "text-center" >Processing...</div>`
             }
-            setTimeout(() => {window.MathJax.Hub.Queue(["Typeset",MathJax.Hub,document.getElementById(this.data.get('title'))])}, 100)
+            setTimeout(() => {window.MathJax.Hub.Queue(["Typeset",MathJax.Hub,document.getElementById(this.data.get('title')+this.data.get('card'))])}, 10000)
             return output
         }
     }

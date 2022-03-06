@@ -139,9 +139,10 @@ class MultiResultCard(ResultCard):
         html = ["<ul>"]
         for card, result in output:
             html.append("<li>")
-            html.append('<div class="cell_input">')
+            html.append('<div class="text-md font-mono text-gray-600">')
             html.append(card.format_input(self.input_repr, self.components))
             html.append('</div>')
+            html.append('<hr style = "border-color: black;">')
             html.append(card.format_output(result, formatter))
             html.append("</li>")
         html.append("</ul>")
@@ -636,7 +637,7 @@ def eval_integral(evaluator, components, parameters=None):
     return sympy.integrate(components['integrand'], *components['limits'])
 
 def eval_integral_manual(evaluator, components, parameters=None):
-    return sympy.integrals.manualintegrate(components['integrand'],
+    return sympy.integrals.manualintegrate.manualintegrate(f, var)(components['integrand'],
                                            components['variable'])
 
 def eval_diffsteps(evaluator, components, parameters=None):
@@ -716,7 +717,7 @@ all_cards = {
 
     'integral_fake': FakeResultCard(
         "Integral",
-        "integrate(%s, {_var})",
+        "(%s, {_var})",
         lambda i, var: sympy.Integral(i, *var),
         eval_method=eval_integral,
         format_input_function=format_integral
@@ -724,12 +725,12 @@ all_cards = {
 
     'integral_manual': ResultCard(
         "Integral",
-        "sympy.integrals.manualintegrate(%s, {_var})",
+        "manualintegrate.manualintegrate(%s, {_var})",
         sympy.Integral),
 
     'integral_manual_fake': FakeResultCard(
         "Integral",
-        "sympy.integrals.manualintegrate(%s, {_var})",
+        "manualintegrate.manualintegrate(%s, {_var})",
         lambda i, var: sympy.Integral(i, *var),
         eval_method=eval_integral_manual,
         format_input_function=format_integral
