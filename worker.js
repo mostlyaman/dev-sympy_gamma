@@ -34,7 +34,7 @@ s = SymPyGamma()
   let sympy_version = await self.pyodide.runPythonAsync(`
 import sympy
 from sympy import *
-x, y = symbols('x y')
+x, y, z, n, k = symbols('x y z n k')
 to_js(sympy.__version__)
 `)
   postMessage({name: 'done-loading', data: sympy_version})
@@ -65,6 +65,12 @@ self.onmessage = async (event) => {
       return to_js(list(map(latex, _result)))
     else:
       return to_js(latex(_result))
+  _func()`)
+      }else if(event.data.name === "eval-card"){
+        var results = await self.pyodide.runPythonAsync(`
+  print('${python}')
+  def _func():
+    return to_js(s.eval_card(${python}))
   _func()`)
       }
       postMessage({name: "output", data: { results, id }});
