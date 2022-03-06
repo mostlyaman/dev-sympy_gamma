@@ -78,3 +78,14 @@ export default {
     }
 }
 </script>
+
+<style>
+table, th, td {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right:auto;
+    padding-inline: 10px;
+    border: 1px solid;
+}
+
+</style>
